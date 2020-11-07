@@ -20,7 +20,12 @@
         iBody = new Image(),
         iFood = new Image(),
         aEat = new Audio(),
-        aDie = new Audio();
+        aDie = new Audio(),
+        lastUpdate = 0,
+        FPS = 0,
+        frames = 0,
+        acumDelta = 0;
+
         
 
     window.requestAnimationFrame = (function () {
@@ -190,6 +195,9 @@
         //Draw Score
         ctx.fillText('Score: ' + score, 0, 10);
 
+        //Draw FPS
+        ctx.fillText('FPS: ' +FPS, 10, 10);
+
         //Draw pause
         if (pause) {
             ctx.textAlign = 'center';
@@ -296,6 +304,13 @@
         paint(ctx);
     }   
     function run() {
+        var now = Date.now(),
+            deltaTime = (now - lastUpdate) / 1000;
+        if (deltaTime > 1) {
+            deltaTime = 0;
+        }
+        lastUpdate = now;
+
         setTimeout(run, 50);
         act();
     }
