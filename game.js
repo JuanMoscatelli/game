@@ -19,6 +19,7 @@
         highscoresScene = null,
         body = [],
         food = null,
+        powerFood = null,
         score = 0,
         dir = 0,
         //wall = [];
@@ -27,7 +28,8 @@
         iBody = new Image(),
         iFood = new Image(),
         aEat = new Audio(),
-        aDie = new Audio();    
+        aDie = new Audio(),
+        iPowerFood = new Image();    
 
     window.requestAnimationFrame = (function () {
         return window.requestAnimationFrame || 
@@ -135,9 +137,13 @@
         iFood.src = 'assets/fruit.png';
         aEat.src = 'assets/chompa.wav';
         aDie.src = 'assets/dies.wav';
+        iPowerFood.src = 'assets/powerfood.png';
         
         // Create food
         food = new Rectangle(80,80,10,10);
+
+        // Create Power Food
+        powerFood = new Rectangle(80,80,10,10);
 
         //Create Walls
         /* 
@@ -186,6 +192,8 @@
         body.push(new Rectangle(0, 0, 10, 10));
         food.x = random(canvas.width / 10 - 1) * 10;
         food.y = random(canvas.height / 10 - 1) * 10;
+        powerFood.x = random(canvas.width / 10 - 1) * 10;
+        powerFood.y = random(canvas.height / 10 - 1) * 10;
         gameover = false;
     };
     gameScene.paint = function (ctx) {
@@ -213,6 +221,11 @@
         //food.fill(ctx);
         ctx.strokeStyle = '#f00';
         food.drawImage(ctx, iFood);
+
+        //Draw Power food
+        ctx.strokeStyle = '#ffaebc';
+        powerFood.drawImage(ctx,iPowerFood);
+        
         
         //Debug last key pressed
         //ctx.fillText('Last Press: ' + lastPress, 0, 20);
@@ -314,7 +327,23 @@
                 food.y = random(canvas.height / 10 - 1) * 10;
                 aEat.play();
             }
-        }
+
+            // Power Food Intersects
+            if (body[0].intersects(powerFood)) {
+                //body.push(new Rectangle(0, 0, 10, 10));
+                score += 5;
+                powerFood.x = random(canvas.width / 10 - 1) * 10;
+                powerFood.y = random(canvas.height / 10 - 1) * 10;
+                aEat.play();
+                fetch('https://jsonplaceholder.typicode.com/?score=10')
+                    .then(function (response){
+                       return console.log('Succesfully score sent');
+                    })
+                    .catch(function (error) {
+                        return console.log('Error trying to send the score');
+                    })
+                }
+            }
 
         //Pause/Unpause
         if (lastPress === KEY_ENTER){
