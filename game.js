@@ -133,11 +133,11 @@
         ctx = canvas.getContext('2d');
 
         // Load assets
-        iBody.src = 'assets/body.png';
-        iFood.src = 'assets/fruit.png';
-        aEat.src = 'assets/chompa.wav';
-        aDie.src = 'assets/dies.wav';
-        iPowerFood.src = 'assets/powerfood.png';
+        iBody.src = 'Assets/body.png';
+        iFood.src = 'Assets/fruit.png';
+        aEat.src = 'Assets/chompa.wav';
+        aDie.src = 'Assets/dies.wav';
+        iPowerFood.src = 'Assets/powerfood.png';
         
         // Create food
         food = new Rectangle(80,80,10,10);
