@@ -335,16 +335,22 @@
                 powerFood.x = random(canvas.width / 10 - 1) * 10;
                 powerFood.y = random(canvas.height / 10 - 1) * 10;
                 aEat.play();
-                fetch('https://jsonplaceholder.typicode.com/?score=10')
-                    .then(function (response){
-                       return console.log('Succesfully score sent');
-                    })
-                    .catch(function (error) {
-                        return console.log('Error trying to send the score');
-                    })
-                }
+                const postScore =
+                    fetch(`https://jsonplaceholder.typicode.com/posts/?score=${score}`,{
+                        method:'POST',
+                        body:score
+                        })
+                        .then(function (response){
+                                if(response.ok){
+                                    console.log('Succesfully score sent',response);
+                                }
+                        })
+                        .catch(function (error) {
+                            return console.log('Error trying to send the score');
+                        })
+                    }
+                
             }
-
         //Pause/Unpause
         if (lastPress === KEY_ENTER){
             pause = !pause;
