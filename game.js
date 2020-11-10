@@ -53,6 +53,7 @@
         this.y = (y === undefined) ? 0 : y;
         this.width = (width === undefined) ? 0 : width;
         this.height = (height === undefined) ? this.width : height;
+        this.isVisible = true;
     }
     
     Rectangle.prototype = {
@@ -196,6 +197,8 @@
         powerFood.y = random(canvas.height / 10 - 1) * 10;
         gameover = false;
     };
+
+
     gameScene.paint = function (ctx) {
         var i=0,
             l=0;
@@ -223,9 +226,10 @@
         food.drawImage(ctx, iFood);
 
         //Draw Power food
+        if (powerFood.isVisible){
         ctx.strokeStyle = '#ffaebc';
         powerFood.drawImage(ctx,iPowerFood);
-        
+        }
         
         //Debug last key pressed
         //ctx.fillText('Last Press: ' + lastPress, 0, 20);
@@ -332,8 +336,16 @@
             if (body[0].intersects(powerFood)) {
                 //body.push(new Rectangle(0, 0, 10, 10));
                 score += 5;
-                powerFood.x = random(canvas.width / 10 - 1) * 10;
-                powerFood.y = random(canvas.height / 10 - 1) * 10;
+                powerFood.x = -100;
+                powerFood.y = -100;
+                powerFood.isVisible = false
+                //Don't display SuperFood for 7 sec
+                setTimeout(function(){
+                    powerFood.isVisible = true;
+					powerFood.x = random(canvas.width / 10 - 1) * 10;
+                    powerFood.y = random(canvas.height / 10 - 1) * 10;
+				}, 7000); 
+                
                 aEat.play();
                 const postScore =
                     fetch(`https://jsonplaceholder.typicode.com/posts/?score=${score}`,{
@@ -348,7 +360,7 @@
                         .catch(function (error) {
                             return console.log('Error trying to send the score');
                         })
-                    }
+                }
                 
             }
         //Pause/Unpause
